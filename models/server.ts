@@ -5,6 +5,9 @@ import reunionesRoutes from '../routes/reuniones';
 import cors from 'cors';
 
 import db from '../db/connection';
+import { GraphQLObjectType ,GraphQLSchema} from 'graphql';
+import { esquemaGeneral } from '../graphql/esquemaGeneral';
+import { graphqlHTTP} from 'express-graphql';
 
 
 class Server {
@@ -56,11 +59,30 @@ class Server {
         this.app.use( express.static('public') );
     }
 
+ graphql () {
+
+
+        const RootQueryType = new GraphQLObjectType({
+          name: 'Consulas',
+          description: 'Api Consultas',
+          fields: () => (esquemaGeneral)
+        })
+        const schema = new GraphQLSchema({
+           query: RootQueryType,
+         // mutation: RootMutationType
+          })
+
+          this.app.use('/graphql', graphqlHTTP({
+               schema,
+               graphiql: true,
+              }));
+      }
+
 
     routes() {
        // this.app.use( this.apiPaths.usuarios, userRoutes )
         this.app.use( this.apiPaths.reuniones, reunionesRoutes )
-
+        this.graphql();
         this.app.get('*', (req, res) => {
             res.status(404).json({
                 msg : 'peticion tuadministrador api no encontrada'
