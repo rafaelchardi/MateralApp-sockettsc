@@ -6,6 +6,7 @@ import { CitaType } from "./types/cita";
 const Citas = [
   { id: 1, description: 'Cita 1'},
   { id: 2, description: 'Cita 2'},
+  { id: 2, description: 'Cita 3 casa'},
 ];
 
 const citasEsquema = {
@@ -16,7 +17,7 @@ const citasEsquema = {
     },
     cita:{
       type: CitaType,
-      description: 'Solo una citas',
+      description: 'Solo una citas rafa casa',
       args: {
           id: {
               type: new GraphQLNonNull(GraphQLInt)
